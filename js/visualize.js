@@ -30,7 +30,7 @@ function initRotating() {
 	
 	var rotating = new THREE.Object3D();
 	var sphere = new THREE.Mesh(new THREE.SphereGeometry(100, 40, 40), shaderMaterial);
-	sphere.rotation.y = -Math.PI/2;
+	sphere.rotation.y = -(90 - 9) * Math.PI / 180; // 使0度经线穿过z轴
 	sphere.id = "base";
 	rotating.add(sphere);
 

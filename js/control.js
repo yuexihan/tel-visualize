@@ -6,11 +6,8 @@ CONTROL.pressX = 0, CONTROL.pressY = 0;
 CONTROL.dragging = false;
 
 CONTROL.rotateX = 0, CONTROL.rotateY = 0;
-CONTROL.rotateVX = 0, CONTROL.rotateVY = 0;
-CONTROL.rotateXMax = 90 * Math.PI/180;	
 
-CONTROL.rotateTargetX = undefined;
-CONTROL.rotateTargetY = undefined;
+CONTROL.rotateXMax = 90 * Math.PI/180;	
 
 CONTROL.keyboard = new THREEx.KeyboardState();
 
@@ -24,8 +21,8 @@ function onDocumentMouseMove( event ) {
 
 	if(CONTROL.dragging){
 		if(CONTROL.keyboard.pressed("shift") == false){
-			CONTROL.rotateVY += (CONTROL.mouseX - CONTROL.pmouseX) / 2 * Math.PI / 180 * 0.3;
-			CONTROL.rotateVX += (CONTROL.mouseY - CONTROL.pmouseY) / 2 * Math.PI / 180 * 0.3;	
+			rotateVY += (CONTROL.mouseX - CONTROL.pmouseX) / 2 * Math.PI / 180 * 0.3;
+			rotateVX += (CONTROL.mouseY - CONTROL.pmouseY) / 2 * Math.PI / 180 * 0.3;	
 		}
 		else{
 			camera.position.x -= (CONTROL.mouseX - CONTROL.pmouseX) * .5; 
@@ -41,8 +38,8 @@ function onDocumentMouseDown( event ) {
 	CONTROL.dragging = true;
 	CONTROL.pressX = CONTROL.mouseX;
 	CONTROL.pressY = CONTROL.mouseY;
-	CONTROL.rotateTargetX = undefined;
-	CONTROL.rotateTargetY = undefined;
+	rotateTargetX = undefined;
+	rotateTargetY = undefined;
 }	
 
 function onDocumentMouseUp( event ){
@@ -83,35 +80,35 @@ function constrain(v, min, max){
 }
 
 function animate() {	
-	if( CONTROL.rotateTargetX !== undefined && CONTROL.rotateTargetY !== undefined ){
+	if( rotateTargetX !== undefined && rotateTargetY !== undefined ){
 
-		CONTROL.rotateVX += (CONTROL.rotateTargetX - CONTROL.rotateX) * 0.012;
-		CONTROL.rotateVY += (CONTROL.rotateTargetY - CONTROL.rotateY) * 0.012;
+		rotateVX += (rotateTargetX - CONTROL.rotateX) * 0.012;
+		rotateVY += (rotateTargetY - CONTROL.rotateY) * 0.012;
 
-		if( Math.abs(CONTROL.rotateTargetX - CONTROL.rotateX) < 0.1 && Math.abs(CONTROL.rotateTargetY - CONTROL.rotateY) < 0.1 ){
-			CONTROL.rotateTargetX = undefined;
-			CONTROL.rotateTargetY = undefined;
+		if( Math.abs(rotateTargetX - CONTROL.rotateX) < 0.1 && Math.abs(rotateTargetY - CONTROL.rotateY) < 0.1 ){
+			rotateTargetX = undefined;
+			rotateTargetY = undefined;
 		}
 	}
 	
-	CONTROL.rotateX += CONTROL.rotateVX;
-	CONTROL.rotateY += CONTROL.rotateVY;
+	CONTROL.rotateX += rotateVX;
+	CONTROL.rotateY += rotateVY;
 
-	CONTROL.rotateVX *= 0.98;
-	CONTROL.rotateVY *= 0.98;
+	rotateVX *= 0.98;
+	rotateVY *= 0.98;
 
-	if(CONTROL.dragging || CONTROL.rotateTargetX !== undefined ){
-		CONTROL.rotateVX *= 0.6;
-		CONTROL.rotateVY *= 0.6;
+	if(CONTROL.dragging || rotateTargetX !== undefined ){
+		rotateVX *= 0.6;
+		rotateVY *= 0.6;
 	}	     
 
 	if(CONTROL.rotateX < -CONTROL.rotateXMax){
 		CONTROL.rotateX = -CONTROL.rotateXMax;
-		CONTROL.rotateVX *= -0.95;
+		rotateVX *= -0.95;
 	}
 	if(CONTROL.rotateX > CONTROL.rotateXMax){
 		CONTROL.rotateX = CONTROL.rotateXMax;
-		CONTROL.rotateVX *= -0.95;
+		rotateVX *= -0.95;
 	}
 
 	// TWEEN.update();		
@@ -196,13 +193,14 @@ function onClick(event) {
 		var countryColorIndex = countryColorMap[i];
 		if( pickColorIndex === countryColorIndex ){
 			// console.log("selecting code " + countryCode);
-			var countryName = countryLookup[countryCode.toUpperCase()];
+			var countryName = countryIso3166[countryCode.toUpperCase()];
 			// console.log("converts to " + countryName);
 			if( countryName === undefined )
 				return;
 			// if( $.inArray(countryName, selectableCountries) <= -1 )
 			// 	return;
 			console.log(countryName);
+			selectVisualization(null, countryCode, null);
 			// var selection = selectionData;
 			// selection.selectedCountry = countryName;
 			// selectVisualization( timeBins, selection.selectedYear, [selection.selectedCountry], selection.getExportCategories(), selection.getImportCategories() );
@@ -210,5 +208,7 @@ function onClick(event) {
 			return;
 		}
 	}
-	console.log('Ocean');
+	console.log('OCEAN');
 }
+
+

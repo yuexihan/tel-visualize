@@ -23,7 +23,14 @@ var countryColorMap = {'PE':1,
 'VU':162,'FK':163,'GM':164,'QA':165,'JM':166,'CY':167,'PR':168,'PS':169,'BN':170,'TT':171,'CV':172,'PF':173,'WS':174,'LU':175,'KM':176,'MU':177,
 'FO':178,'ST':179,'AN':180,'DM':181,'TO':182,'KI':183,'FM':184,'BH':185,'AD':186,'MP':187,'PW':188,'SC':189,'AG':190,'BB':191,'TC':192,'VC':193,
 'LC':194,'YT':195,'VI':196,'GD':197,'MT':198,'MV':199,'KY':200,'KN':201,'MS':202,'BL':203,'NU':204,'PM':205,'CK':206,'WF':207,'AS':208,'MH':209,
-'AW':210,'LI':211,'VG':212,'SH':213,'JE':214,'AI':215,'MF_1_':216,'GG':217,'SM':218,'BM':219,'TV':220,'NR':221,'GI':222,'PN':223,'MC':224,'VA':225,
+'AW':210,'LI':211,'VG':212,'SH':213,'JE':214,'AI':215,'MF':216,'GG':217,'SM':218,'BM':219,'TV':220,'NR':221,'GI':222,'PN':223,'MC':224,'VA':225,
 'IM':226,'GU':227,'SG':228};
 
-var countryLookUp;
+var countryIso3166, countryLatLon, pcLatLon;
+
+var rotateVX = 0, rotateVY = 0;
+var rotateTargetX = undefined, rotateTargetY = undefined;
+
+var selection = {selectedYear: null, selectedCountry: null, previousCountry: null};
+
+var timeBins;

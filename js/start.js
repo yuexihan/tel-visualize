@@ -6,9 +6,15 @@ function start() {
 		mapOutlineImage.src = 'images/map_outline.png';
 		mapOutlineImage.onload = function() {
 			$.get('json/country_iso3166.json', function(querry) {
-		    	countryLookup = querry;
-				init();
-				animate();
+		    	countryIso3166 = querry;
+		    	$.get('json/country_lat_lon.json', function(querry) {
+		    		countryLatLon = querry;
+		    		$.get('json/pc_lat_lon.json', function(querry) {
+		    			pcLatLon = querry;
+						init();
+						animate();
+		    		});
+		    	});
 			});
 		}
 	}
