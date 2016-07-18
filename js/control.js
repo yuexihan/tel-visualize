@@ -187,32 +187,28 @@ function onClick(event) {
 		return;
 
 	var pickColorIndex = getPickColor();
-
+	var countryName;
 	for(var i in countryColorMap){
 		var countryCode = i;
 		var countryColorIndex = countryColorMap[i];
 		if( pickColorIndex === countryColorIndex ){
-			// console.log("selecting code " + countryCode);
-			var countryName = countryIso3166[countryCode.toUpperCase()];
-			// console.log("converts to " + countryName);
-			if( countryName === undefined )
-				return;
-			// if( $.inArray(countryName, selectableCountries) <= -1 )
-			// 	return;
+			countryName = countryIso3166[countryCode.toUpperCase()];
 			console.log(countryName);
-			selection.previousCountry = selection.selectedCountry;
-			selection.selectedCountry = countryCode;
-
-			rotateTo(countryCode);
-			selectVisualization(null, countryCode, null);
-			// var selection = selectionData;
-			// selection.selectedCountry = countryName;
-			// selectVisualization( timeBins, selection.selectedYear, [selection.selectedCountry], selection.getExportCategories(), selection.getImportCategories() );
-			// console.log('selecting ' + countryName + ' from click');
-			return;
+			break;
 		}
 	}
-	console.log('OCEAN');
+	if (!countryName) {
+		console.log('OCEAN');
+	}
+	selection.previousCountry = selection.selectedCountry;
+	if (countryName) {
+		selection.selectedCountry = countryCode;
+		rotateTo(countryCode);
+		selectVisualization(null, [countryCode], null);
+	} else {
+		selection.selectedCountry = null;
+		rotateTo(null);
+		selectVisualization(null, [], null);
+	}
+
 }
-
-

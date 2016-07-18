@@ -27,6 +27,7 @@
 		<script type="text/javascript" src="lib/rgbcolor.js"></script>
 		<script type="text/javascript" src="lib/canvg.js"></script>
 		<script type="text/javascript" src="lib/innersvg.js"></script>
+		<script type="text/javascript" src="lib/util.js"></script>
 
 		<script type="text/javascript" src="js/global.js"></script>
 		<script type="text/javascript" src="js/visualize.js"></script>
@@ -91,10 +92,10 @@
 				float indexedColor = mapColor.x;
 				vec2 lookupUV = vec2( indexedColor, 0. );
 				vec4 lookupColor = texture2D( lookup, lookupUV );
-				float mask = lookupColor.x + (1.-outlineLevel) * indexedColor;
+				float mask = outlineLevel * lookupColor.x + (1.-outlineLevel) * indexedColor;
 				mask = clamp(mask,0.,1.);
 				float outlineColor = texture2D( outline, vUv ).x * outlineLevel;
-				float diffuse = mask + outlineColor;
+				float diffuse = max(mask, outlineColor);
 				gl_FragColor = vec4( vec3(diffuse), 1.  );
 			}
 		</script>
