@@ -133,3 +133,82 @@ function animate() {
 		}
 	);	    	
 }
+
+function getPickColor(){
+	// var affectedCountries = undefined;
+	// if( visualizationMesh.children[0] !== undefined )
+	// 	affectedCountries = visualizationMesh.children[0].affectedCountries;
+
+	// highlightCountry([]);
+	// rotating.remove(visualizationMesh);
+	mapUniforms['outlineLevel'].value = 0;
+
+	lookupTexture.needsUpdate = true;
+
+	renderer.autoClear = false;
+	renderer.autoClearColor = false;
+	renderer.autoClearDepth = false;
+	renderer.autoClearStencil = false;
+	renderer.preserve
+
+    renderer.clear();
+    renderer.render(scene,camera);
+
+    var gl = renderer.context;
+    gl.preserveDrawingBuffer = true;
+
+	var mx = ( CONTROL.mouseX + renderer.context.canvas.width/2 );//(mouseX + renderer.context.canvas.width/2) * 0.25;
+	var my = ( -CONTROL.mouseY + renderer.context.canvas.height/2 );//(-mouseY + renderer.context.canvas.height/2) * 0.25;
+	mx = Math.floor( mx );
+	my = Math.floor( my );
+
+	var buf = new Uint8Array( 4 );	
+	// console.log(buf);
+	gl.readPixels(mx, my, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, buf);
+	// console.log(buf);
+
+	renderer.autoClear = true;
+	renderer.autoClearColor = true;
+	renderer.autoClearDepth = true;
+	renderer.autoClearStencil = true;
+
+	gl.preserveDrawingBuffer = false;
+
+	mapUniforms['outlineLevel'].value = 1;
+	// rotating.add(visualizationMesh);
+
+
+	// if( affectedCountries !== undefined ){
+	// 	highlightCountry(affectedCountries);
+	// }
+	return buf[0];
+}
+
+function onClick(event) {
+	// 手动转地球仪，忽略
+	if( Math.abs(CONTROL.pressX - CONTROL.mouseX) > 3 || Math.abs(CONTROL.pressY - CONTROL.mouseY) > 3 )
+		return;
+
+	var pickColorIndex = getPickColor();
+
+	for(var i in countryColorMap){
+		var countryCode = i;
+		var countryColorIndex = countryColorMap[i];
+		if( pickColorIndex === countryColorIndex ){
+			// console.log("selecting code " + countryCode);
+			var countryName = countryLookup[countryCode.toUpperCase()];
+			// console.log("converts to " + countryName);
+			if( countryName === undefined )
+				return;
+			// if( $.inArray(countryName, selectableCountries) <= -1 )
+			// 	return;
+			console.log(countryName);
+			// var selection = selectionData;
+			// selection.selectedCountry = countryName;
+			// selectVisualization( timeBins, selection.selectedYear, [selection.selectedCountry], selection.getExportCategories(), selection.getImportCategories() );
+			// console.log('selecting ' + countryName + ' from click');
+			return;
+		}
+	}
+	console.log('Ocean');
+}

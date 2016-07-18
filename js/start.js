@@ -5,12 +5,11 @@ function start() {
 		mapOutlineImage = new Image();
 		mapOutlineImage.src = 'images/map_outline.png';
 		mapOutlineImage.onload = function() {
-			// loadWorldPins(
-			// 	function() {
-					init();
-					animate();
-			// 	}
-			// );
+			$.get('json/country_iso3166.json', function(querry) {
+		    	countryLookup = querry;
+				init();
+				animate();
+			});
 		}
 	}
 }
@@ -36,6 +35,7 @@ function init() {
 	document.addEventListener('mousedown', onDocumentMouseDown, true);	
 	document.addEventListener('mouseup', onDocumentMouseUp, false);	
 	document.addEventListener('mousewheel', onMouseWheel, false);
+	document.addEventListener('click', onClick, false);
 	
 	//	firefox	
 	document.addEventListener( 'DOMMouseScroll', function(e){

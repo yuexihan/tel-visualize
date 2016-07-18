@@ -3,7 +3,7 @@ function initRotating() {
 	lookupCanvas.width = 256;
 	lookupCanvas.height = 1;
 
-	var lookupTexture = new THREE.Texture(lookupCanvas);
+	lookupTexture = new THREE.Texture(lookupCanvas);
 	lookupTexture.magFilter = THREE.NearestFilter;
 	lookupTexture.minFilter = THREE.NearestFilter;
 	lookupTexture.needsUpdate = true;
@@ -16,14 +16,14 @@ function initRotating() {
 	var outlinedMapTexture = new THREE.Texture(mapOutlineImage);
 	outlinedMapTexture.needsUpdate = true;
 
-	var uniforms = {
+	mapUniforms = {
 		'mapIndex': {type: 't', value: 0, texture: indexedMapTexture},		
 		'lookup': {type: 't', value: 1, texture: lookupTexture},
 		'outline': {type: 't', value: 2, texture: outlinedMapTexture},
 		'outlineLevel': {type: 'f', value: 1},
 	};
 	var shaderMaterial = new THREE.ShaderMaterial( {
-		uniforms: 		uniforms,
+		uniforms: 		mapUniforms,
 		vertexShader:   document.getElementById('globeVertexShader').textContent,
 		fragmentShader: document.getElementById('globeFragmentShader').textContent,
 	});
