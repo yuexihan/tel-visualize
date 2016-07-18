@@ -1,12 +1,8 @@
 function selectVisualization(year, selectedCountry, type) {
-	selection.previousCountry = selection.selectedCountry;
-	selection.selectedCountry = selectedCountry;
-	rotateTo(selection.previousCountry, selection.selectedCountry);
 }
 
-function rotateTo(previousCountry, selectedCountry) {
-	previousCountry = previousCountry && previousCountry.toUpperCase();
-	selectedCountry = selectedCountry.toUpperCase();
+function rotateTo(selectedCountry) {
+	previousCountry = selection.previousCountry
 	if (previousCountry !== selectedCountry) {
 		selectedLatLon = countryLatLon[selectedCountry];
 		if (selectedLatLon) {
@@ -16,7 +12,6 @@ function rotateTo(previousCountry, selectedCountry) {
 			var targetY = -longitude * Math.PI / 180;
 			var targetYNeg = targetY;
 			var targetYPos = targetY;
-			console.log(rotating.rotation.y);
 
 			while (true) {
 				if(Math.abs(targetYNeg - rotating.rotation.y) <= Math.PI) {
@@ -28,7 +23,6 @@ function rotateTo(previousCountry, selectedCountry) {
 				}
 				targetYNeg = targetYNeg - Math.PI * 2;
 				targetYPos = targetYPos + Math.PI * 2;
-				console.log(targetYNeg, targetYPos);
 			}
 		}
 	}

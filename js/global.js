@@ -33,4 +33,10 @@ var rotateTargetX = undefined, rotateTargetY = undefined;
 
 var selection = {selectedYear: null, selectedCountry: null, previousCountry: null};
 
-var timeBins;
+var timeBins = {};
+
+var pcFiles = [
+'tel_20160405', 'tel_20160406', 'tel_20160408', 'tel_20160409', 'tel_20160410', 'tel_20160411',
+'tra_20160406', 'tra_20160408', 'tra_20160409', 'tra_20160410', 'tra_20160411',
+];
+

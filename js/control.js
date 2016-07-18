@@ -200,6 +200,10 @@ function onClick(event) {
 			// if( $.inArray(countryName, selectableCountries) <= -1 )
 			// 	return;
 			console.log(countryName);
+			selection.previousCountry = selection.selectedCountry;
+			selection.selectedCountry = countryCode;
+
+			rotateTo(countryCode);
 			selectVisualization(null, countryCode, null);
 			// var selection = selectionData;
 			// selection.selectedCountry = countryName;
