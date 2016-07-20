@@ -137,7 +137,7 @@ function getPickColor(){
 	// 	affectedCountries = visualizationMesh.children[0].affectedCountries;
 
 	// highlightCountry([]);
-	// rotating.remove(visualizationMesh);
+	rotating.remove(visualizationMesh);
 	mapUniforms['outlineLevel'].value = 0;
 
 	lookupTexture.needsUpdate = true;
@@ -154,8 +154,8 @@ function getPickColor(){
     var gl = renderer.context;
     gl.preserveDrawingBuffer = true;
 
-	var mx = ( CONTROL.mouseX + renderer.context.canvas.width/2 );//(mouseX + renderer.context.canvas.width/2) * 0.25;
-	var my = ( -CONTROL.mouseY + renderer.context.canvas.height/2 );//(-mouseY + renderer.context.canvas.height/2) * 0.25;
+	var mx = ( CONTROL.mouseX + renderer.context.canvas.width/2 );
+	var my = ( -CONTROL.mouseY + renderer.context.canvas.height/2 );
 	mx = Math.floor( mx );
 	my = Math.floor( my );
 
@@ -172,7 +172,7 @@ function getPickColor(){
 	gl.preserveDrawingBuffer = false;
 
 	mapUniforms['outlineLevel'].value = 1;
-	// rotating.add(visualizationMesh);
+	rotating.add(visualizationMesh);
 
 
 	// if( affectedCountries !== undefined ){
@@ -204,11 +204,11 @@ function onClick(event) {
 	if (countryName) {
 		selection.selectedCountry = countryCode;
 		rotateTo(countryCode);
-		selectVisualization(null, [countryCode], null);
+		selectVisualization('20160411', TYPE, DOMESTIC, selection.selectedCountry, selection.selectedPc);
 	} else {
 		selection.selectedCountry = null;
 		rotateTo(null);
-		selectVisualization(null, [], null);
+		selectVisualization('20160411', TYPE, DOMESTIC, selection.selectedCountry, selection.selectedPc);
 	}
 
 }

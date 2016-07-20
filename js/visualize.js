@@ -1,7 +1,7 @@
 var VISUALIZE = VISUALIZE || {};
-VISUALIZE.exportColor = 0xdd380c;
-VISUALIZE.importColor = 0x154492;
-VISUALIZE.normalColor = 0x999999;
+VISUALIZE['telephone'] = {exportColor: 0xbb380c, importColor: 0x3a4492, domesticColor: 0xbbbbbb};
+VISUALIZE['transport'] = {exportColor: 0xdd380c, importColor: 0x154492, domesticColor: 0x999999};
+VISUALIZE.rad = 100;
 
 function initRotating() {
 	lookupCanvas = document.createElement('canvas');
@@ -35,14 +35,14 @@ function initRotating() {
 	
 	var rotating = new THREE.Object3D();
 	var sphere = new THREE.Mesh(new THREE.SphereGeometry(100, 40, 40), shaderMaterial);
-	sphere.rotation.y = -(90 - 9) * Math.PI / 180; // 使0度经线穿过z轴
+	sphere.rotation.y = -(90 - 11) * Math.PI / 180; // 使0度经线穿过z轴
 	sphere.id = "base";
 	rotating.add(sphere);
 
 	return rotating;
 }
 
-function makeConnectionLineGeometry(fromVec, toVec, value) {
+function makeConnectionLineGeometry(fromVec, toVec) {
 	if (fromVec === undefined || toVec === undefined) {
 		return undefined;
 	}
@@ -103,8 +103,6 @@ function makeConnectionLineGeometry(fromVec, toVec, value) {
 	//	create a line geometry out of these
 	var curveGeometry = THREE.Curve.Utils.createLineGeometry(points);
 
-	curveGeometry.value = value;
-
 	return curveGeometry;
 }
 
@@ -130,41 +128,205 @@ function highlightCountry(countries) {
 	lookupTexture.needsUpdate = true;
 }
 
-// function getHistoricalData( country ){
-// 	var history = [];
+// convert latitude and longitude to 3d coordinates
+function latlon2Vector(lat, lon) {
+    var phi = Math.PI/2 - lat * Math.PI / 180;
+    var theta = lon * Math.PI / 180;
+		
+	var center = new THREE.Vector3();                
+        center.x = Math.sin(phi) * Math.sin(theta) * VISUALIZE.rad;
+        center.y = Math.cos(phi) * VISUALIZE.rad;
+        center.z = Math.sin(phi) * Math.cos(theta) * VISUALIZE.rad;  	
+	
+	return center;
+}
 
-// 	var countryName = country.countryName;
+function buildDataVizGeometries(date, type, domestic, selectedCountry, seletedPc) {
+	var list = timeBins[date];
 
-// 	var exportCategories = selectionData.getExportCategories();
-// 	var importCategories = selectionData.getImportCategories();
+	var linesGeo = new THREE.Geometry();
+	var lineColors = [];
+	var particlesGeo = new THREE.Geometry();
+	var particleColors = [];
 
-// 	for( var i in timeBins ){
-// 		var yearBin = timeBins[i].data;
-// 		var value = {imports: 0, exports:0};
-// 		for( var s in yearBin ){
-// 			var set = yearBin[s];
-// 			var categoryName = reverseWeaponLookup[set.wc];
+	if (seletedPc) {
+		selectedCountry = pcLatLon[seletedPc].iso.toUpperCase();
+		domestic = true;
+	}
 
-// 			var exporterCountryName = set.e.toUpperCase();
-// 			var importerCountryName = set.i.toUpperCase();
-// 			var relevantCategory = ( countryName == exporterCountryName && $.inArray(categoryName, exportCategories ) >= 0 ) || 
-// 								   ( countryName == importerCountryName && $.inArray(categoryName, importCategories ) >= 0 );
+	for (var i in list) {
+		var set = list[i];
+		var from = set.from;
+		var to = set.to;
+		var value = set.time || set.pop;
+		// 0-009 is not in pc_lat_lon
+		if (!pcLatLon[from] || !pcLatLon[to]) {
+			continue;
+		}
+		var fromCountry = pcLatLon[from].iso.toUpperCase();
+		var toCountry = pcLatLon[to].iso.toUpperCase();
+		var fromVec, toVec;
 
-// 			if( relevantCategory == false )
-// 				continue;
+		if (!value) {
+			continue;
+		}
 
-// 			//	ignore all unidentified country data
-// 			if( countryData[exporterCountryName] === undefined || countryData[importerCountryName] === undefined )
-// 				continue;
+		// if not related to selected country
+		if (selectedCountry) {
+			if (fromCountry !== selectedCountry && toCountry !== selectedCountry) {
+				continue;
+			}
+		}
+
+		if ($.inArray(fromCountry, affectedCountries) < 0) {
+			affectedCountries.push(fromCountry);
+		}
+		if ($.inArray(toCountry, affectedCountries) < 0) {
+			affectedCountries.push(toCountry);
+		}
+
+		if (domestic) {
+			fromVec = latlon2Vector(pcLatLon[from].latitude, pcLatLon[from].longitude);
+			toVec = latlon2Vector(pcLatLon[to].latitude, pcLatLon[to].longitude);
+		} else {
+			if (fromCountry === toCountry) {
+				continue;
+			}
+			fromVec = latlon2Vector(countryLatLon[fromCountry].lat, countryLatLon[fromCountry].lon);
+			toVec = latlon2Vector(countryLatLon[toCountry].lat, countryLatLon[fromCountry].lon);
+		}
+		var lineGeometry = makeConnectionLineGeometry(fromVec, toVec);
+
+		var lineColor;
+		if (fromCountry === toCountry) {
+			lineColor = new THREE.Color(VISUALIZE[type].domesticColor);
+		} else if (fromCountry === selectedCountry) {
+			lineColor = new THREE.Color(VISUALIZE[type].exportColor);
+		} else if (toCountry === selectedCountry){
+			lineColor = new THREE.Color(VISUALIZE[type].importColor);
+		} else {
+			lineColor = new THREE.Color(VISUALIZE[type].domesticColor);
+		}
+
+		for (var j in lineGeometry.vertices) {
+			lineColors.push(lineColor);
+		}
+		THREE.GeometryUtils.merge(linesGeo, lineGeometry);
+
+		var particleSize, particleCount;
+		if (type === 'telephone') {
+			particleSize = Math.sqrt(value) / 50;
+			particleSize = constrain(particleSize, 0.1, 60);
+			particleCount = Math.sqrt(value) / 30;
+			particleCount = constrain(particleCount, 1, 100);
+		} else {
+			particleSize = Math.sqrt(value) / 2;
+			particleSize = constrain(particleSize, 0.1, 60);
+			particleCount = Math.sqrt(value);
+			particleCount = constrain(particleCount, 1, 100);
+		}
+
+		var points = lineGeometry.vertices;
+		for (var s=0; s<particleCount; s++) {
+			var desiredIndex = s / particleCount * points.length;
+			var rIndex = constrain(Math.floor(desiredIndex),0,points.length-1);
+
+			var point = points[rIndex];
+			var particle = point.clone();
+			particle.moveIndex = rIndex;
+			particle.nextIndex = rIndex+1;
+			if(particle.nextIndex >= points.length )
+				particle.nextIndex = 0;
+			particle.lerpN = 0;
+			particle.path = points;
+			particlesGeo.vertices.push( particle );
+			particle.size = particleSize;
+			particleColors.push(lineColor);
+		}
+	}
+
+	linesGeo.colors = lineColors;
+	var splineOutline = new THREE.Line(linesGeo, new THREE.LineBasicMaterial({
+		color: 0xffffff, opacity: 1.0, blending: THREE.AdditiveBlending,
+		transparent:true, depthWrite: false, vertexColors: true, 
+		linewidth: 1 
+	}));
+	splineOutline.renderDepth = false;
+
+	attributes = {
+		size: {type: 'f', value: []},
+		customColor: {type: 'c', value: []}
+	};
+
+	uniforms = {
+		amplitude: { type: "f", value: 1.0 },
+		color:     { type: "c", value: new THREE.Color( 0xffffff ) },
+		texture:   { type: "t", value: 0, texture: THREE.ImageUtils.loadTexture( "images/map_mask.png" ) },
+	};
+
+	var shaderMaterial = new THREE.ShaderMaterial( {
+		uniforms: 		uniforms,
+		attributes:     attributes,
+		vertexShader:   document.getElementById( 'vertexshader' ).textContent,
+		fragmentShader: document.getElementById( 'fragmentshader' ).textContent,
+
+		blending: 		THREE.AdditiveBlending,
+		depthTest: 		true,
+		depthWrite: 	false,
+		transparent:	true,
+		// sizeAttenuation: true,
+	});
+	var particleGraphic = THREE.ImageUtils.loadTexture("images/map_mask.png");
+	particlesGeo.color = particleColors;
+	var pSystem = new THREE.ParticleSystem( particlesGeo, shaderMaterial );
+	pSystem.dynamic = true;
+	splineOutline.add(pSystem);
+
+	var vertices = pSystem.geometry.vertices;
+	var values_size = attributes.size.value;
+	var values_color = attributes.customColor.value;
+
+	for( var i = 0; i < vertices.length; i++ ) {
+		values_size[ i ] = pSystem.geometry.vertices[i].size;
+		values_color[ i ] = particleColors[i];
+	}
+
+	pSystem.update = function(){	
+		for( var i in this.geometry.vertices ){						
+			var particle = this.geometry.vertices[i];
+			var path = particle.path;
+			var moveLength = path.length;
 			
-// 			if( exporterCountryName == countryName )
-// 				value.exports += set.v;
-// 			if( importerCountryName == countryName )
-// 				value.imports += set.v;
-// 		}
-// 		history.push(value);
-// 	}
-// 	// console.log(history);
-// 	return history;
-// }
+			particle.lerpN += 0.05;
+			if(particle.lerpN > 1){
+				particle.lerpN = 0;
+				particle.moveIndex = particle.nextIndex;
+				particle.nextIndex++;
+				if( particle.nextIndex >= path.length ){
+					particle.moveIndex = 0;
+					particle.nextIndex = 1;
+				}
+			}
 
+			var currentPoint = path[particle.moveIndex];
+			var nextPoint = path[particle.nextIndex];
+			
+			particle.copy( currentPoint );
+			particle.lerpSelf( nextPoint, particle.lerpN );			
+		}
+		this.geometry.verticesNeedUpdate = true;
+	};
+
+	splineOutline.affectedCountries = affectedCountries;
+
+	return splineOutline;
+}
+
+function constrain(v, min, max){
+	if( v < min )
+		v = min;
+	else
+	if( v > max )
+		v = max;
+	return v;
+}

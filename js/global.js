@@ -5,6 +5,8 @@ var lookupCanvas, lookupTexture; // change map color
 
 var rotating; // the whole rotating object
 
+var visualizationMesh; // lines and particles
+
 var glContainer = document.getElementById('glContainer');
 
 var mapUniforms; // 传入地图shader
@@ -31,7 +33,9 @@ var countryIso3166, countryLatLon, pcLatLon;
 var rotateVX = 0, rotateVY = 0;
 var rotateTargetX = undefined, rotateTargetY = undefined;
 
-var selection = {selectedYear: null, selectedCountry: null, previousCountry: null};
+var selection = {
+	selectedYear: null, selectedCountry: null, previousCountry: null, selectedPc: null
+};
 
 var timeBins = {};
 
@@ -40,3 +44,8 @@ var pcFiles = [
 'tra_20160406', 'tra_20160408', 'tra_20160409', 'tra_20160410', 'tra_20160411',
 ];
 
+var affectedCountries = [];
+
+// var TYPE = ['telephone'];
+var TYPE = ['transport'];
+var DOMESTIC = true; 

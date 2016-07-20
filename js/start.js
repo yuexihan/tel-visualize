@@ -4,6 +4,7 @@ function start() {
 	mapIndexedImage.onload = function() {
 		mapOutlineImage = new Image();
 		mapOutlineImage.src = 'images/map_outline.png';
+		// mapOutlineImage.src = 'images/earthmap1k.jpg';
 		mapOutlineImage.onload = function() {
 			$.get('json/country_iso3166.json', function(querry) {
 		    	countryIso3166 = querry;
@@ -33,6 +34,8 @@ function init() {
 	scene.add(camera);
 
 	rotating = initRotating();
+	visualizationMesh = new THREE.Object3D();
+	rotating.add(visualizationMesh);
 	scene.add(rotating);
 
 	renderer.render(scene, camera);
