@@ -1,9 +1,9 @@
 function start() {
 	mapIndexedImage = new Image();
-	mapIndexedImage.src = 'images/map_indexed.png';
+	mapIndexedImage.src = 'images/map_indexed_1.png';
 	mapIndexedImage.onload = function() {
 		mapOutlineImage = new Image();
-		mapOutlineImage.src = 'images/map_outline.png';
+		mapOutlineImage.src = 'images/map_outline_1.png';
 		// mapOutlineImage.src = 'images/earthmap1k.jpg';
 		mapOutlineImage.onload = function() {
 			$.get('json/country_iso3166.json', function(querry) {

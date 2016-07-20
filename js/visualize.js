@@ -1,6 +1,6 @@
 var VISUALIZE = VISUALIZE || {};
-VISUALIZE['telephone'] = {exportColor: 0xbb380c, importColor: 0x3a4492, domesticColor: 0xbbbbbb};
-VISUALIZE['transport'] = {exportColor: 0xdd380c, importColor: 0x154492, domesticColor: 0x999999};
+VISUALIZE['telephone'] = {exportColor: 0xbb380c, importColor: 0x3a4492, domesticColor: 0x55dd55, globalColor: 0xdddddd};
+VISUALIZE['transport'] = {exportColor: 0xdd380c, importColor: 0x154492, domesticColor: 0x559955, globalColor: 0x999999};
 VISUALIZE.rad = 100;
 
 function initRotating() {
@@ -35,7 +35,7 @@ function initRotating() {
 	
 	var rotating = new THREE.Object3D();
 	var sphere = new THREE.Mesh(new THREE.SphereGeometry(100, 40, 40), shaderMaterial);
-	sphere.rotation.y = -(90 - 11) * Math.PI / 180; // 使0度经线穿过z轴
+	sphere.rotation.y = -90 * Math.PI / 180; // 使0度经线穿过z轴
 	sphere.id = "base";
 	rotating.add(sphere);
 
@@ -119,7 +119,7 @@ function highlightCountry(countries) {
 
 		var fillCSS = '#333333';
 		if( country === selectedCountry )
-			fillCSS = '#eeeeee'
+			fillCSS = '#999999'
 
 		ctx.fillStyle = fillCSS;
 		ctx.fillRect(colorIndex, 0, 1, 1);
@@ -171,8 +171,12 @@ function buildDataVizGeometries(date, type, domestic, selectedCountry, seletedPc
 			continue;
 		}
 
-		// if not related to selected country
-		if (selectedCountry) {
+		// if not related
+		if (seletedPc) {
+			if (from !== seletedPc && to !== seletedPc) {
+				continue;
+			}
+		} else if (selectedCountry) {
 			if (fromCountry !== selectedCountry && toCountry !== selectedCountry) {
 				continue;
 			}
@@ -198,14 +202,24 @@ function buildDataVizGeometries(date, type, domestic, selectedCountry, seletedPc
 		var lineGeometry = makeConnectionLineGeometry(fromVec, toVec);
 
 		var lineColor;
-		if (fromCountry === toCountry) {
-			lineColor = new THREE.Color(VISUALIZE[type].domesticColor);
-		} else if (fromCountry === selectedCountry) {
-			lineColor = new THREE.Color(VISUALIZE[type].exportColor);
-		} else if (toCountry === selectedCountry){
-			lineColor = new THREE.Color(VISUALIZE[type].importColor);
+		if (!seletedPc) {
+			if (fromCountry === toCountry) {
+				lineColor = new THREE.Color(VISUALIZE[type].domesticColor);
+			} else if (fromCountry === selectedCountry) {
+				lineColor = new THREE.Color(VISUALIZE[type].exportColor);
+			} else if (toCountry === selectedCountry){
+				lineColor = new THREE.Color(VISUALIZE[type].importColor);
+			} else {
+				lineColor = new THREE.Color(VISUALIZE[type].globalColor);
+			}
 		} else {
-			lineColor = new THREE.Color(VISUALIZE[type].domesticColor);
+			if (from === seletedPc) {
+				lineColor = new THREE.Color(VISUALIZE[type].exportColor);
+			} else if (to === seletedPc) {
+				lineColor = new THREE.Color(VISUALIZE[type].importColor);
+			} else {
+				lineColor = new THREE.Color(VISUALIZE[type].domesticColor);
+			}
 		}
 
 		for (var j in lineGeometry.vertices) {
