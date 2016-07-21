@@ -2,6 +2,7 @@ function selectVisualization(date, types, domestic, selectedCountry, seletedPc) 
 	function selectVisualize(date, types) {
 		if (types.length === 0) {
 			highlightCountry(affectedCountries);
+			rotateTo(selectedCountry);
 		} else {
 			var type = types[0];
 			types.splice(0, 1);
@@ -15,8 +16,8 @@ function selectVisualization(date, types, domestic, selectedCountry, seletedPc) 
 			}
 
 			if ($.inArray(prefixedDate, timeBins) < 0) {
-				$.get('json/' + prefixedDate + '.json', function (querry) {
-					timeBins[prefixedDate] = querry;
+				$.get('json/' + prefixedDate + '.json', function (query) {
+					timeBins[prefixedDate] = query;
 					visualizationMesh.add(buildDataVizGeometries(prefixedDate, type, domestic, selectedCountry, seletedPc));
 					selectVisualize(date, types);
 				});

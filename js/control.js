@@ -32,6 +32,7 @@ function onDocumentMouseMove( event ) {
 }
 
 function onDocumentMouseDown( event ) {
+	// no relation to canvas
 	if(event.target.className.indexOf('noMapDrag') !== -1) {
 		return;
 	}
@@ -202,13 +203,14 @@ function onClick(event) {
 	}
 	selection.previousCountry = selection.selectedCountry;
 	if (countryName) {
+		$("#hudButtons .countryTextInput").val(countryName);
 		selection.selectedCountry = countryCode;
-		rotateTo(countryCode);
-		selectVisualization('20160411', TYPE, DOMESTIC, selection.selectedCountry, selection.selectedPc);
+		selectVisualization(selection.selectedDate, TYPE, DOMESTIC, selection.selectedCountry, selection.selectedPc);
 	} else {
+		$("#hudButtons .countryTextInput").val('GLOBAL');
 		selection.selectedCountry = null;
-		rotateTo(null);
-		selectVisualization('20160411', TYPE, DOMESTIC, selection.selectedCountry, selection.selectedPc);
+		// rotateTo(null);
+		selectVisualization(selection.selectedDate, TYPE, DOMESTIC, selection.selectedCountry, selection.selectedPc);
 	}
 
 }

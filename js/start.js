@@ -6,12 +6,12 @@ function start() {
 		mapOutlineImage.src = 'images/map_outline_1.png';
 		// mapOutlineImage.src = 'images/earthmap1k.jpg';
 		mapOutlineImage.onload = function() {
-			$.get('json/country_iso3166.json', function(querry) {
-		    	countryIso3166 = querry;
-		    	$.get('json/country_lat_lon.json', function(querry) {
-		    		countryLatLon = querry;
-		    		$.get('json/pc_lat_lon.json', function(querry) {
-		    			pcLatLon = querry;
+			$.get('json/country_iso3166.json', function(query) {
+		    	countryIso3166 = query;
+		    	$.get('json/country_lat_lon.json', function(query) {
+		    		countryLatLon = query;
+		    		$.get('json/pc_lat_lon.json', function(query) {
+		    			pcLatLon = query;
 						init();
 						animate();
 		    		});
@@ -23,6 +23,7 @@ function start() {
 
 
 function init() {
+
 	renderer = new THREE.WebGLRenderer({antialias: false});
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	renderer.setClearColor(0x000000); 
@@ -51,5 +52,8 @@ function init() {
 		var evt=window.event || e; 
 		onMouseWheel(evt);
 	}, false);
-	var windowResize = THREEx.WindowResize(renderer, camera)		
+	var windowResize = THREEx.WindowResize(renderer, camera)
+
+	selectVisualization(selection.selectedDate, TYPE, DOMESTIC, selection.selectedCountry, selection.selectedPc);
+	d3Graphs.initGraphs();
 }

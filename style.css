@@ -1,3 +1,137 @@
+/* Import Roboto Font */
+@font-face {
+    font-family: 'Roboto';
+    src: url('roboto/roboto-regular-webfont.eot');
+    src: url('roboto/roboto-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('roboto/roboto-regular-webfont.woff') format('woff'),
+         url('roboto/roboto-regular-webfont.ttf') format('truetype'),
+         url('roboto/roboto-regular-webfont.svg#RobotoRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('roboto/roboto-bold-webfont.eot');
+    src: url('roboto/roboto-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('roboto/roboto-bold-webfont.woff') format('woff'),
+         url('roboto/roboto-bold-webfont.ttf') format('truetype'),
+         url('roboto/roboto-bold-webfont.svg#RobotoBold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('roboto/roboto-bolditalic-webfont.eot');
+    src: url('roboto/roboto-bolditalic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('roboto/roboto-bolditalic-webfont.woff') format('woff'),
+         url('roboto/roboto-bolditalic-webfont.ttf') format('truetype'),
+         url('roboto/roboto-bolditalic-webfont.svg#RobotoBoldItalic') format('svg');
+    font-weight: bold;
+    font-style: italic;
+
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('roboto/roboto-italic-webfont.eot');
+    src: url('roboto/roboto-italic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('roboto/roboto-italic-webfont.woff') format('woff'),
+         url('roboto/roboto-italic-webfont.ttf') format('truetype'),
+         url('roboto/roboto-italic-webfont.svg#RobotoItalic') format('svg');
+    font-weight: normal;
+    font-style: italic;
+
+}	
+
+/*Import Ropa Sans Font, do we need other font file types??*/
+@font-face {
+    font-family: 'RopaSans';
+    src: url('ropasans/RopaSans-Regular.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'RopaSans';
+    src: url('ropasans/RopaSans-Italic.ttf') format('truetype');
+    font-style: italic;
+}
+
+
 body {
 	margin: 0px;
+}
+.overlayCountries {
+	z-index: 10;
+}
+
+.pointer {
+    pointer-events: auto;
+}
+.noPointer {
+    pointer-events: none;
+}
+
+#hudButtons {
+    position: absolute;
+    top: 20px;    
+	right: 20px;
+    /*width: 489px;*/
+}
+/*
+#glContainer canvas {
+    pointer-events:none;
+}*/
+
+#hudButtons .countryTextInput {
+    float:                  right;
+    font-size: 				17px;
+    width: 					300px;
+    margin-right: 			5px;
+	font-family: 			'RopaSans';
+	text-transform:          uppercase;
+}
+#hudButtons .armsBtn {
+    float: right;
+    background: 			#333333;
+    padding: 				3px 10px 2px;
+    color: 					white;
+    border: 				0;
+    font-size: 				18px;
+	font-family: 			'RopaSans';
+	cursor: 				pointer;
+	margin-right: 			0px;
+	opacity:                0.9;
+}
+#hudButtons .armsBtn:hover {
+    opacity: 1;
+}
+#hudButtons .zoomBtn {
+    margin-right:           5px;
+    width:                  30px;
+    font-weight:            bold;
+    height:                 24px;
+}
+
+.ui-autocomplete {
+    position: absolute;
+}
+.ui-autocomplete .ui-menu-item {
+    border-top:             1px solid #656565;
+    margin-left:            -39px;
+    padding-left:           4px;
+    font-family:            'RopaSans';
+    font-size:              18px;
+    color:                  white;
+    background:             #333;
+    width:                  301px;
+}
+.ui-autocomplete #ui-active-menuitem {
+    background:             white;
+    color:                  black;
+    width:                  301px;
+    display:                block;
+    margin-left:            -4px;
+    padding-left:           4px;
 }

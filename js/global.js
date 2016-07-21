@@ -34,7 +34,7 @@ var rotateVX = 0, rotateVY = 0;
 var rotateTargetX = undefined, rotateTargetY = undefined;
 
 var selection = {
-	selectedYear: null, selectedCountry: null, previousCountry: null, selectedPc: null
+	selectedDate: '20160411', selectedCountry: 'CN', previousCountry: null, selectedPc: null
 };
 
 var timeBins = {};
@@ -48,4 +48,5 @@ var affectedCountries = [];
 
 // var TYPE = ['telephone'];
 var TYPE = ['transport'];
-var DOMESTIC = true; 
+var DOMESTIC = true;
+
