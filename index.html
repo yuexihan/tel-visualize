@@ -104,7 +104,12 @@
 				gl_FragColor = vec4( vec3(diffuse), 1.  );
 			}
 		</script>
-
+		<div id="hudHeader" class="overlayCountries noPointer">
+            <h1 class="noPointer">
+                大数据可视化项目
+                <div class="subtitle">交互式电话数据挖掘</div>
+			</h1>
+        </div>
 		<div class="overlayCountries noPointer" id="hudButtons">
 			<input type="button" value="search" class="searchBtn armsBtn pointer noMapDrag">
 			<input type="text" name="country" class="countryTextInput pointer noMapDrag" value="CHINA">
@@ -112,9 +117,33 @@
 			<input type="button" value="+" class="zoomBtn zoomInBtn armsBtn pointer noMapDrag">
 			<br class="clear" />
 		</div>
-		<div id="chooseMap" >
+		<div id="chooseMap" class="overlayCountries">
 			<div id="outline" class="noMapDrag"></div>
 			<div id="earth" class="noMapDrag"></div>
+		</div>
+		<div id="history" class="overlayCountries">
+			<ul class="timeline">
+				<li>20160401</li>
+				<li>20160402</li>
+				<li>20160403</li>
+				<li>20160404</li>
+				<li>20160405</li>
+				<li>20160406</li>
+				<li>20160407</li>
+				<li>20160408</li>
+				<li>20160409</li>
+				<li>20160410</li>
+				<li>20160411</li>
+				<li>20160412</li>
+				<li>20160413</li>
+				<li>20160414</li>
+				<li>20160415</li>
+				<li>20160416</li>
+				<li>20160417</li>
+				<li>20160418</li>
+				<li>20160419</li>
+                <div id="handle" class="noMapDrag"></div>
+			</ul>
 		</div>
 	</div>
 </body>

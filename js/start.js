@@ -51,14 +51,16 @@ function init() {
 	document.addEventListener('mousemove', onDocumentMouseMove, true);
 	document.addEventListener('mousedown', onDocumentMouseDown, true);	
 	document.addEventListener('mouseup', onDocumentMouseUp, false);	
-	document.addEventListener('mousewheel', onMouseWheel, false);
-	document.addEventListener('click', onClick, false);
+	var masterContainer = document.getElementById('visualization');
+	masterContainer.addEventListener( 'click', onClick, true );	
+	masterContainer.addEventListener( 'mousewheel', onMouseWheel, false );
 	
 	//	firefox	
-	document.addEventListener( 'DOMMouseScroll', function(e){
-		var evt=window.event || e; 
-		onMouseWheel(evt);
-	}, false);
+	masterContainer.addEventListener( 'DOMMouseScroll', function(e){
+		    var evt=window.event || e; //equalize event object
+    		onMouseWheel(evt);
+	}, false );
+
 	var windowResize = THREEx.WindowResize(renderer, camera)
 
 	selectVisualization(selection.selectedDate, TYPE, DOMESTIC, selection.selectedCountry, selection.selectedPc);

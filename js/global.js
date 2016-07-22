@@ -35,7 +35,7 @@ var rotateVX = 0, rotateVY = 0;
 var rotateTargetX = undefined, rotateTargetY = undefined;
 
 var selection = {
-	selectedDate: '20160411', selectedCountry: 'CN', previousCountry: null, selectedPc: null
+	selectedDate: '20160406', selectedCountry: 'CN', previousCountry: null, selectedPc: null
 };
 
 var timeBins = {};
@@ -44,6 +44,13 @@ var pcFiles = [
 'tel_20160405', 'tel_20160406', 'tel_20160408', 'tel_20160409', 'tel_20160410', 'tel_20160411',
 'tra_20160406', 'tra_20160408', 'tra_20160409', 'tra_20160410', 'tra_20160411',
 ];
+var pcDates = [];
+for (var i in pcFiles) {
+	var date = /\d+/.exec(pcFiles[i])[0];
+	if ($.inArray(date, pcDates) < 0) {
+		pcDates.push(date);
+	}
+}
 
 var affectedCountries = [];
 var activePc = {};

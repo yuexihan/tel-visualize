@@ -14,8 +14,24 @@ var d3Graphs = {
 		this.showHud();
 		// this.drawBarGraph();
 		// this.drawHistogram();
+		$("#history ul li").each(function () {
+			var date = $(this).html();
+			if ($.inArray(date, pcDates) >= 0) {
+				$(this).click(d3Graphs.updateDate);
+				$(this).css("cursor", "pointer");
+			} else {
+				$(this).css("color", "#666");
+			}
+		});
+		$("#handle").css('margin-left', -32-35*8+35*(selection.selectedDate-20160401)+'px');
 	},
 
+	updateDate: function() {
+		selection.selectedDate = $(this).html();
+		console.log($(this).html());
+		$("#handle").css('margin-left', -32-35*8+35*(selection.selectedDate-20160401)+'px');
+		selectVisualization(selection.selectedDate, TYPE, DOMESTIC, selection.selectedCountry, selection.selectedPc);
+	},
 
 	showHud: function() {
 		$(".zoomBtn").mousedown(d3Graphs.zoomBtnClick);
