@@ -88,7 +88,7 @@ body {
 	margin: 0px;
 }
 .overlayCountries {
-	z-index: 10;
+	z-index: 1000;
 }
 
 .pointer {
@@ -159,4 +159,28 @@ body {
     display:                block;
     margin-left:            -4px;
     padding-left:           4px;
+}
+
+#chooseMap {
+	position: absolute;
+	top: 200px;
+	right: 20px;
+}
+#earth {
+	width: 64px;
+	height: 64px;
+	background: url('images/earth.png');
+	background-size:cover;
+	display: inline-block;
+	cursor: pointer;
+
+}
+#outline {
+	width: 64px;
+	height: 64px;
+	background: url('images/outline.png');
+	background-size:cover;
+	display: inline-block;
+	margin-right: 20px;
+	cursor: pointer;
 }

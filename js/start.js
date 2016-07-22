@@ -4,19 +4,26 @@ function start() {
 	mapIndexedImage.onload = function() {
 		mapOutlineImage = new Image();
 		mapOutlineImage.src = 'images/map_outline_1.png';
-		// mapOutlineImage.src = 'images/earthmap1k.jpg';
 		mapOutlineImage.onload = function() {
-			$.get('json/country_iso3166.json', function(query) {
-		    	countryIso3166 = query;
-		    	$.get('json/country_lat_lon.json', function(query) {
-		    		countryLatLon = query;
-		    		$.get('json/pc_lat_lon.json', function(query) {
-		    			pcLatLon = query;
-						init();
-						animate();
-		    		});
-		    	});
-			});
+			outlinedMapTexture = new THREE.Texture(mapOutlineImage);
+			outlinedMapTexture.needsUpdate = true;
+			mapEarthImage = new Image();
+			mapEarthImage.src = 'images/map_earth.jpg';
+			mapEarthImage.onload = function() {
+				earthMapTexture = new THREE.Texture(mapEarthImage);
+				earthMapTexture.needsUpdate = true;
+				$.get('json/country_iso3166.json', function(query) {
+			    	countryIso3166 = query;
+			    	$.get('json/country_lat_lon.json', function(query) {
+			    		countryLatLon = query;
+			    		$.get('json/pc_lat_lon.json', function(query) {
+			    			pcLatLon = query;
+							init();
+							animate();
+			    		});
+			    	});
+				});
+			}
 		}
 	}
 }

@@ -24,8 +24,38 @@ var d3Graphs = {
 		$("#hudButtons .countryTextInput").keyup(d3Graphs.countryKeyUp);
 		$("#hudButtons .countryTextInput").focus(d3Graphs.countryFocus);
 		$("#hudButtons .searchBtn").click(d3Graphs.updateViz);
+		$("#earth").click(d3Graphs.useEarth);
+		$("#outline").click(d3Graphs.useOutline);
 	},
 
+	useEarth: function() {
+		while( rotating.children.length > 0 ){
+			var c = rotating.children[0];
+			rotating.remove(c);
+		}
+		rotating.add(visualizationMesh);
+		mapUniforms.outline.texture = earthMapTexture;
+		var sphere = new THREE.Mesh(new THREE.SphereGeometry(100, 40, 40), shaderMaterial);
+		sphere.rotation.y = -90 * Math.PI / 180; // 使0度经线穿过z轴
+		sphere.id = "base";
+		rotating.add(sphere);
+		HIGHLIGHT = false;
+		highlightCountry(affectedCountries);
+	},
+	useOutline: function() {
+		while( rotating.children.length > 0 ){
+			var c = rotating.children[0];
+			rotating.remove(c);
+		}
+		rotating.add(visualizationMesh);
+		mapUniforms.outline.texture = outlinedMapTexture;
+		var sphere = new THREE.Mesh(new THREE.SphereGeometry(100, 40, 40), shaderMaterial);
+		sphere.rotation.y = -90 * Math.PI / 180; // 使0度经线穿过z轴
+		sphere.id = "base";
+		rotating.add(sphere);
+		HIGHLIGHT = true;
+		highlightCountry(affectedCountries);
+	},
 
 	zoomBtnMouseup: function() {
 		clearInterval(d3Graphs.zoomBtnInterval);
@@ -137,7 +167,7 @@ function attachMarkerToPc(pcName){
 	marker.innerHTML = pcName.replace(' ','&nbsp;');	
 
 	var markerSelect = function(e){
-		$("#hudButtons .countryTextInput").val(this.pcName);
+		$("#hudButtons .countryTextInput").val(countryIso3166[pcLatLon[this.pcName].iso.toUpperCase()]);
 		selection.selectedPc = this.pcName;
 		selection.previousCountry = selection.selectedCountry;
 		selection.selectedCountry = pcLatLon[this.pcName].iso.toUpperCase();

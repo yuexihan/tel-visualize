@@ -18,16 +18,15 @@ function initRotating() {
 	indexedMapTexture.magFilter = THREE.NearestFilter;
 	indexedMapTexture.minFilter = THREE.NearestFilter;
 
-	var outlinedMapTexture = new THREE.Texture(mapOutlineImage);
-	outlinedMapTexture.needsUpdate = true;
 
 	mapUniforms = {
 		'mapIndex': {type: 't', value: 0, texture: indexedMapTexture},
 		'lookup': {type: 't', value: 1, texture: lookupTexture},
 		'outline': {type: 't', value: 2, texture: outlinedMapTexture},
+		// 'outline': {type: 't', value: 2, texture: earthMapTexture},
 		'outlineLevel': {type: 'f', value: 1},
 	};
-	var shaderMaterial = new THREE.ShaderMaterial( {
+	shaderMaterial = new THREE.ShaderMaterial( {
 		uniforms: 		mapUniforms,
 		vertexShader:   document.getElementById('globeVertexShader').textContent,
 		fragmentShader: document.getElementById('globeFragmentShader').textContent,
@@ -113,18 +112,19 @@ function highlightCountry(countries) {
 
 	var selectedCountry = selection.selectedCountry;
 	
-	for( var i in countries ){
-		var country = countries[i];
-		var colorIndex = countryColorMap[country];
+	if (HIGHLIGHT) {
+		for( var i in countries ){
+			var country = countries[i];
+			var colorIndex = countryColorMap[country];
 
-		var fillCSS = '#333333';
-		if( country === selectedCountry )
-			fillCSS = '#999999'
+			var fillCSS = '#333333';
+			if( country === selectedCountry )
+				fillCSS = '#999999'
 
-		ctx.fillStyle = fillCSS;
-		ctx.fillRect(colorIndex, 0, 1, 1);
+			ctx.fillStyle = fillCSS;
+			ctx.fillRect(colorIndex, 0, 1, 1);
+		}
 	}
-	
 	lookupTexture.needsUpdate = true;
 }
 

@@ -95,8 +95,12 @@
 				vec4 lookupColor = texture2D( lookup, lookupUV );
 				float mask = outlineLevel * lookupColor.x + (1.-outlineLevel) * indexedColor;
 				mask = clamp(mask,0.,1.);
-				float outlineColor = (texture2D( outline, vUv ).x + 0.01) * outlineLevel;
-				float diffuse = max(mask, outlineColor);
+				vec3 outlineColor = (texture2D( outline, vUv ).xyz + 0.01) * outlineLevel;
+
+				// outlineColor *= 10.;
+				// outlineColor = clamp(outlineColor,0.,1.);
+
+				vec3 diffuse = max(vec3(mask), outlineColor);
 				gl_FragColor = vec4( vec3(diffuse), 1.  );
 			}
 		</script>
@@ -108,7 +112,10 @@
 			<input type="button" value="+" class="zoomBtn zoomInBtn armsBtn pointer noMapDrag">
 			<br class="clear" />
 		</div>
-		
+		<div id="chooseMap" >
+			<div id="outline" class="noMapDrag"></div>
+			<div id="earth" class="noMapDrag"></div>
+		</div>
 	</div>
 </body>
 </html>

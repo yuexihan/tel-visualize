@@ -1,7 +1,8 @@
 var camera, scene, renderer;
 
-var mapIndexedImage, mapOutlineImage; // 灰度图和国界图
+var mapIndexedImage, mapOutlineImage, mapEarthImage; // 灰度图和国界图
 var lookupCanvas, lookupTexture; // change map color
+var outlinedMapTexture, earthMapTexture;
 
 var rotating; // the whole rotating object
 
@@ -9,7 +10,7 @@ var visualizationMesh; // lines and particles
 
 var glContainer = document.getElementById('glContainer');
 
-var mapUniforms; // 传入地图shader
+var mapUniforms, shaderMaterial; // 传入地图shader
 
 var countryColorMap = {'PE':1,
 'BF':2,'FR':3,'LY':4,'BY':5,'PK':6,'ID':7,'YE':8,'MG':9,'BO':10,'CI':11,'DZ':12,'CH':13,'CM':14,'MK':15,'BW':16,'UA':17,
@@ -52,3 +53,4 @@ var TYPE = ['telephone'];
 // var TYPE = ['transport'];
 var DOMESTIC = true;
 
+var HIGHLIGHT = true;
