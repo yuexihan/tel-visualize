@@ -3,6 +3,9 @@ function selectVisualization(date, types, domestic, selectedCountry, seletedPc) 
 		if (types.length === 0) {
 			highlightCountry(affectedCountries);
 			rotateTo(selectedCountry);
+			for (var pcName in activePc) {
+				attachMarkerToPc(pcName);
+			}
 		} else {
 			var type = types[0];
 			types.splice(0, 1);
@@ -33,9 +36,11 @@ function selectVisualization(date, types, domestic, selectedCountry, seletedPc) 
 		var c = visualizationMesh.children[0];
 		visualizationMesh.remove(c);
 	}
-	while(affectedCountries.length > 0) {
-		affectedCountries.pop();
+	affectedCountries = [];
+	for (var pcName in activePc) {
+		removeMarkerFrompc(pcName);
 	}
+	activePc = [];
 
 	types = types.slice(0);
 	selectVisualize(date, types);

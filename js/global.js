@@ -45,8 +45,10 @@ var pcFiles = [
 ];
 
 var affectedCountries = [];
+var activePc = {};
+var markers = [];
 
-// var TYPE = ['telephone'];
-var TYPE = ['transport'];
+var TYPE = ['telephone'];
+// var TYPE = ['transport'];
 var DOMESTIC = true;
 

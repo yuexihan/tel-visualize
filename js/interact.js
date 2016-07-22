@@ -70,3 +70,92 @@ var d3Graphs = {
 		}
 	}
 }
+
+function attachMarkerToPc(pcName){
+	pc = activePc[pcName];
+	center = pc.center;
+
+	var container = document.getElementById( 'visualization' );	
+	var template = document.getElementById( 'marker_template' );
+	var marker = template.cloneNode(true);
+
+	pc.marker = marker;
+	pc.pcName = pcName;
+	container.appendChild( marker );
+
+	marker.pcName = pcName;
+	marker.center = center.clone();
+
+	marker.hover = false;
+	marker.selected = false;
+    if( pcName === selection.selectedPc )
+		marker.selected = true;
+
+	marker.setPosition = function(x,y,z){
+		this.style.left = x - 2 + 'px';
+		this.style.top = y - this.clientHeight - 2 + 'px';	
+		this.style.zIndex = z;
+	}
+
+	marker.setVisible = function( vis ){
+		if( ! vis )
+			this.style.display = 'none';
+		else{
+			this.style.display = 'inline';
+		}
+	}
+
+    marker.jquery = $(marker);
+	marker.setSize = function( s ){
+	    var detailSize = Math.floor(2 + s * 0.5);	
+        var totalHeight = detailSize * 2;
+		this.style.fontSize = totalHeight * 1.125 + 'pt';
+	}
+
+	marker.update = function(){
+		var matrix = rotating.matrixWorld;
+		var abspos = matrix.multiplyVector3( this.center.clone() );
+		// console.log(pc, pcName);
+		var screenPos = screenXY(abspos);			
+
+		var s = 3 + camera.scale.z * 1;
+
+		if( this.selected )
+			s *= 2;
+		
+		this.setSize( s ); 
+
+		this.setVisible( ( abspos.z > 60 ) && s > 3 );	
+
+		var zIndex = Math.floor( 1000 - abspos.z + s );
+		if( this.selected || this.hover )
+			zIndex = 10000;
+
+		this.setPosition( screenPos.x, screenPos.y, zIndex );	
+	}
+
+	marker.innerHTML = pcName.replace(' ','&nbsp;');	
+
+	var markerSelect = function(e){
+		$("#hudButtons .countryTextInput").val(this.pcName);
+		selection.selectedPc = this.pcName;
+		selection.previousCountry = selection.selectedCountry;
+		selection.selectedCountry = pcLatLon[this.pcName].iso.toUpperCase();
+		selectVisualization(selection.selectedDate, TYPE, DOMESTIC, selection.selectedCountry, selection.selectedPc);
+	};
+	marker.addEventListener('click', markerSelect, true);
+
+	markers.push( marker );
+}
+function removeMarkerFrompc( pcName ){
+	var pc = activePc[pcName];
+	if( pc.marker === undefined )
+		return;
+
+	var index = markers.indexOf(pc.marker);
+	if( index >= 0 )
+		markers.splice( index, 1 );
+	var container = document.getElementById( 'visualization' );		
+	container.removeChild( pc.marker );
+	pc.marker = undefined;		
+}

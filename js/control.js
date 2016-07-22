@@ -129,7 +129,11 @@ function animate() {
 				mesh.update();
 			} 
 		}
-	);	    	
+	);
+	for( var i in markers ){
+		var marker = markers[i];
+		marker.update();
+	}	
 }
 
 function getPickColor(){
@@ -202,6 +206,7 @@ function onClick(event) {
 		console.log('OCEAN');
 	}
 	selection.previousCountry = selection.selectedCountry;
+	selection.selectedPc = null;
 	if (countryName) {
 		$("#hudButtons .countryTextInput").val(countryName);
 		selection.selectedCountry = countryCode;

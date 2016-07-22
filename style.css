@@ -58,6 +58,31 @@
     font-style: italic;
 }
 
+.marker {
+	position:				absolute;
+	display:				inline-block;
+	/*background-color: 		rgba(0,0,0,.87);*/
+	background: 			url('images/tag.svg');
+	background-repeat:no-repeat;
+	background-size:cover;
+	text-align: 			center;
+
+	color:					#ffffff;
+	font-size:				4pt;
+    font-family: 			'RopaSans';
+	-moz-user-select:		-moz-none;
+	-khtml-user-select:		none;
+	-webkit-user-select:	none;
+	margin: 				0px;
+	border:					0px;
+	padding:				10px;
+	overflow: 				hidden;
+	cursor:					pointer;
+}
+
+#marker_template {
+	display: none;
+}
 
 body {
 	margin: 0px;

@@ -189,16 +189,24 @@ function buildDataVizGeometries(date, type, domestic, selectedCountry, seletedPc
 			affectedCountries.push(toCountry);
 		}
 
-		if (domestic) {
+		// if (domestic) {
 			fromVec = latlon2Vector(pcLatLon[from].latitude, pcLatLon[from].longitude);
 			toVec = latlon2Vector(pcLatLon[to].latitude, pcLatLon[to].longitude);
-		} else {
-			if (fromCountry === toCountry) {
-				continue;
-			}
-			fromVec = latlon2Vector(countryLatLon[fromCountry].lat, countryLatLon[fromCountry].lon);
-			toVec = latlon2Vector(countryLatLon[toCountry].lat, countryLatLon[fromCountry].lon);
+		// } else {
+		// 	if (fromCountry === toCountry) {
+		// 		continue;
+		// 	}
+		// 	fromVec = latlon2Vector(countryLatLon[fromCountry].lat, countryLatLon[fromCountry].lon);
+		// 	toVec = latlon2Vector(countryLatLon[toCountry].lat, countryLatLon[fromCountry].lon);
+		// }
+
+		if (!activePc[from]) {
+			activePc[from] = {center: fromVec};
 		}
+		if (!activePc[to]) {
+			activePc[to] = {center: toVec};
+		}
+
 		var lineGeometry = makeConnectionLineGeometry(fromVec, toVec);
 
 		var lineColor;
