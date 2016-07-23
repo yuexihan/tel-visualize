@@ -207,6 +207,18 @@ function buildDataVizGeometries(date, type, domestic, selectedCountry, seletedPc
 			activePc[to] = {center: toVec};
 		}
 
+		if (type === 'telephone') {
+			statistic.totalTime += value;
+		} else if (from === selection.seletedPc) {
+			statistic.popOut += value;
+		} else if (to === selection.seletedPc) {
+			statistic.popIn += value;
+		} else if (fromCountry === selection.selectedCountry) {
+			statistic.popOut += value;
+		} else if (toCountry === selection.selectedCountry) {
+			statistic.popIn += value;
+		}
+
 		var lineGeometry = makeConnectionLineGeometry(fromVec, toVec);
 
 		var lineColor;

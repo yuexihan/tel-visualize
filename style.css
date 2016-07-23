@@ -255,3 +255,34 @@ body {
 	transform: translateX(-50%);
 	margin-left: -312px;
 }
+#types {
+	position: 				absolute;
+    bottom: 				0;
+    right: 100px;
+    color: #fff;
+    /*background-color: 		rgba(43,43,43,0.9);*/
+}
+#types label {
+	padding: 5px;
+	width: 100px;
+	display: block;
+    font-size: 				14px;
+	font-family: 			'RopaSans';
+	text-align: 			center;
+}
+#statistic {
+	position:				absolute;
+	/*background-color: 		rgba(0,0,0,.87);	*/
+	color:					#bbb;
+	font-size:				10pt;
+    font-family: 			'RopaSans';
+	margin: 				0px;
+	border:					0px;
+	padding:				10px;
+	overflow: 				hidden;	
+	top:200px;
+	left:20px;
+}
+#statistic div{
+	margin: 10px;
+}

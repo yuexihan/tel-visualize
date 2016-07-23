@@ -56,8 +56,11 @@ var affectedCountries = [];
 var activePc = {};
 var markers = [];
 
-var TYPE = ['telephone'];
+var TYPE = [];
+// var TYPE = ['telephone'];
 // var TYPE = ['transport'];
 var DOMESTIC = true;
 
 var HIGHLIGHT = true;
+
+var statistic = {totalTime:0, popIn:0, popOut:0};

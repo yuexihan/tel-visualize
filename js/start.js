@@ -63,6 +63,6 @@ function init() {
 
 	var windowResize = THREEx.WindowResize(renderer, camera)
 
-	selectVisualization(selection.selectedDate, TYPE, DOMESTIC, selection.selectedCountry, selection.selectedPc);
 	d3Graphs.initGraphs();
+	// selectVisualization(selection.selectedDate, TYPE, DOMESTIC, selection.selectedCountry, selection.selectedPc);
 }

@@ -21,7 +21,8 @@
 		<script type="text/javascript" src="lib/THREEx.KeyboardState.js"></script>
 		<script type="text/javascript" src="lib/THREEx.WindowResize.js"></script>
 		<script type="text/javascript" src="lib/Stats.js"></script>
-		<script type="text/javascript" src="lib/jquery-1.7.1.min.js"></script>
+		<!-- <script type="text/javascript" src="lib/jquery-1.7.1.min.js"></script> -->
+		<script type="text/javascript" src="lib/jquery-3.1.0.min.js"></script>
 		<script type="text/javascript" src="lib/jquery-ui-1.8.21.custom.min.js"></script>
 		<script type="text/javascript" src="lib/RequestAnimationFrame.js"></script>
 		<script type="text/javascript" src="lib/ShaderExtras.js"></script>
@@ -144,6 +145,18 @@
 				<li>20160419</li>
                 <div id="handle" class="noMapDrag"></div>
 			</ul>
+		</div>
+		<div id="types">
+			<label for="telephone"><input type="checkbox" value="telephone" id="telephone">通信流量</label>
+			<label for="transport"><input type="checkbox" value="transport" id="transport">人口流动</label>
+		</div>
+		<div id="statistic">
+			总通信量
+			<div id="totalTime">0</div>
+			人口流出
+			<div id="popIn">0</div>
+			人口流入
+			<div id="popOut">0</div>
 		</div>
 	</div>
 </body>

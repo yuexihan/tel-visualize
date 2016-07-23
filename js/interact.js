@@ -24,13 +24,29 @@ var d3Graphs = {
 			}
 		});
 		$("#handle").css('margin-left', -32-35*8+35*(selection.selectedDate-20160401)+'px');
+		if ($.inArray('tra_' + selection.selectedDate, pcFiles) < 0) {
+			$("#transport").prop('disabled', true);
+			$("#transport").prop('checked', false);
+			d3Graphs.checkTransport.call($("#transport"));
+		} else {
+			$("#transport").prop('disabled', false);
+		}
+		$("#telephone").prop("checked", true);
+		d3Graphs.checkTelephone.call($("#telephone"));
 	},
 
 	updateDate: function() {
 		selection.selectedDate = $(this).html();
+		if ($.inArray('tra_' + selection.selectedDate, pcFiles) < 0) {
+			$("#transport").prop('disabled', true);
+			$("#transport").prop('checked', false);
+			d3Graphs.checkTransport.call($("#transport"));
+		} else {
+			$("#transport").prop('disabled', false);
+			selectVisualization(selection.selectedDate, TYPE, DOMESTIC, selection.selectedCountry, selection.selectedPc);
+		}
 		console.log($(this).html());
 		$("#handle").css('margin-left', -32-35*8+35*(selection.selectedDate-20160401)+'px');
-		selectVisualization(selection.selectedDate, TYPE, DOMESTIC, selection.selectedCountry, selection.selectedPc);
 	},
 
 	showHud: function() {
@@ -42,6 +58,40 @@ var d3Graphs = {
 		$("#hudButtons .searchBtn").click(d3Graphs.updateViz);
 		$("#earth").click(d3Graphs.useEarth);
 		$("#outline").click(d3Graphs.useOutline);
+		$("#telephone").click(d3Graphs.checkTelephone);
+		$("#transport").click(d3Graphs.checkTransport);
+	},
+	checkTelephone: function() {
+		if ($(this).prop("checked")) {
+			if ($.inArray('telephone', TYPE) < 0) {
+				TYPE.push('telephone');
+			}
+			$("#totalTime").css('color','#bbb');
+		} else {
+			var index = TYPE.indexOf('telephone');
+			if (index >= 0) {
+				TYPE.splice(index, 1);
+			}
+			$("#totalTime").css('color','#333');
+		}
+		selectVisualization(selection.selectedDate, TYPE, DOMESTIC, selection.selectedCountry, selection.selectedPc);
+	},
+	checkTransport: function() {
+		if ($(this).prop("checked")) {
+			if ($.inArray('transport', TYPE) < 0) {
+				TYPE.push('transport');
+			}
+			$("#popIn").css("color", "#bbb");
+			$("#popOut").css("color", "#bbb");
+		} else {
+			var index = TYPE.indexOf('transport');
+			if (index >= 0) {
+				TYPE.splice(index, 1);
+			}
+			$("#popIn").css("color", "#333");
+			$("#popOut").css("color", "#333");
+		}
+		selectVisualization(selection.selectedDate, TYPE, DOMESTIC, selection.selectedCountry, selection.selectedPc);
 	},
 
 	useEarth: function() {

@@ -6,6 +6,9 @@ function selectVisualization(date, types, domestic, selectedCountry, seletedPc) 
 			for (var pcName in activePc) {
 				attachMarkerToPc(pcName);
 			}
+			$("#totalTime").html(statistic.totalTime);
+			$("#popIn").html(statistic.popIn);
+			$("#popOut").html(statistic.popOut);
 		} else {
 			var type = types[0];
 			types.splice(0, 1);
@@ -41,6 +44,7 @@ function selectVisualization(date, types, domestic, selectedCountry, seletedPc) 
 		removeMarkerFrompc(pcName);
 	}
 	activePc = [];
+	statistic = {totalTime:0, popIn:0, popOut:0};
 
 	types = types.slice(0);
 	selectVisualize(date, types);
