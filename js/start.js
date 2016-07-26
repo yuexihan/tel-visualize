@@ -53,7 +53,7 @@ function init() {
 	document.addEventListener('mouseup', onDocumentMouseUp, false);	
 	var masterContainer = document.getElementById('visualization');
 	masterContainer.addEventListener( 'click', onClick, true );	
-	masterContainer.addEventListener( 'mousewheel', onMouseWheel, false );
+	document.addEventListener( 'mousewheel', onMouseWheel, false );
 	
 	//	firefox	
 	masterContainer.addEventListener( 'DOMMouseScroll', function(e){

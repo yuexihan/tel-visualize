@@ -27,11 +27,12 @@ var d3Graphs = {
 		if ($.inArray('tra_' + selection.selectedDate, pcFiles) < 0) {
 			$("#transport").prop('disabled', true);
 			$("#transport").prop('checked', false);
-			d3Graphs.checkTransport.call($("#transport"));
+			// d3Graphs.checkTransport.call($("#transport"));
 		} else {
 			$("#transport").prop('disabled', false);
 		}
 		$("#telephone").prop("checked", true);
+		d3Graphs.checkTransport.call($("#transport"));
 		d3Graphs.checkTelephone.call($("#telephone"));
 	},
 
